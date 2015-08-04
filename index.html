@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<script type="text/javascript">
+		
+		// Замикання - це можливість використання вложеною функцією перемінних з зовнішньої функції, навіть після завершення її роботи
+		function outerFunc(href) {
+			
+			href.innerHTML = '<p><a id="clickme" href="#">Click me</a></p>';
+
+			var closureTest = function() {
+				href.onclick = function() {
+					href.innerHTML = '<p><a id="clickme" href="#">Closure OK</a></p>'
+				}
+			}
+			closureTest();
+			return href;
+		}
+		
+
+		var href = document.createElement('href');
+		outerFunc(href);
+		document.body.appendChild(href)
+		
+		
+	</script>
+
+	
+
+	<script type="text/javascript">
+		// test scope
+		// область видимості змінних
+		scope1 = 'global1';
+		scope2 = 'global2';
+
+		var scopeLocal = function() {
+			if(arguments.length) {
+				// redefine global var
+				scope1 = 'local1';
+			}
+			// define local var
+			var scope2 = 'local2';
+		};
+
+		scopeLocal(true);
+		console.log('s1: ' + scope1 + '/' + 's2:' + scope2)
+
+	</script>
+
+
+
+	<script type="text/javascript">
+		// test hoisting
+		// підняття змінних
+		scope = 'global';
+		
+		var scopeLocal = function() {
+			if(arguments.length) {
+				// redefine only local var
+				scope = 'local';
+			}
+			var scope = 'test hoisting'
+		};
+
+		scopeLocal(true);
+		console.log('s1: ' + scope)
+
+	</script>
+
+
+
+	<script type="text/javascript">
+		// test callback
+
+		function counter(count, callback) {
+			return callback(count+1);
+		}
+
+		var i = 1;
+
+		counter(i, function(new_count) {
+			console.log(new_count);
+		});
+
+
+	</script>
+
+	<script type="text/javascript">
+		// prototype
+		function Obj(name) {
+			this.name = name;
+		}
+		
+		Obj.prototype.action = function(action) {
+		    this.action = action
+		    alert(this.name + ' ' + this.action)
+		}
+
+
+		var bingo = new Obj('Bingo');
+		bingo.action('run')
+	</script>
+
+	<script type="text/javascript">
+		// pattern module
+		// можливість об'явити приватні змінні і методи, які будуть доступні тільки в області видимості даного модуля
+		var someObj = (function() {
+			var someStore = [];
+			return {
+				getSomeStore: function() {
+					return someStore;
+				},
+				addToSomeStore: function(v) {
+					someStore.push(v);
+				}
+			}
+		}());
+
+		someObj.addToSomeStore('some test text');
+		var store = someObj.getSomeStore();
+		console.log(store)
+	</script>
+
+</body>
+</html>
